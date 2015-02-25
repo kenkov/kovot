@@ -2,37 +2,9 @@
 # coding:utf-8
 
 
-import abc
 from logging import getLogger
 from selector import Selector
 from postprocessing import PostProcessing
-
-
-class Module(metaclass=abc.ABCMeta):
-    """
-    message の形式
-    message:
-        "id"
-        "text"
-        "user":
-            "name"
-            "screen_name"
-    """
-    def __init__(
-        self,
-        logger=None,
-    ):
-        self.logger = logger if logger else getLogger(__file__)
-
-    def is_fire(self, message, master):
-        return True
-
-    @abc.abstractmethod
-    def reses(self, message, master):
-        pass
-
-    def __str__(self):
-        return self.__class__.__name__
 
 
 class Kovot:
@@ -61,6 +33,8 @@ class Kovot:
             "user":
                 "name"
                 "screen_name"
+
+        将来的には "type" もいれる
         """
         return (
             "text" in message and
@@ -84,10 +58,13 @@ class Kovot:
             []
         )
 
-    def run(self):
+    def show_modules(self) -> None:
         self.logger.info("using modules:\n{}".format(
             "\n".join("    - {}".format(str(mod)) for mod in self.modules)
         ))
+
+    def run(self):
+        self.show_modules()
         for message in self.stream:
             if not self.is_message(message):
                 continue

@@ -2,21 +2,21 @@
 # coding:utf-8
 
 
-import TwitterAPI
-# import kovlive
-
 import abc
 import sys
 from datetime import datetime
 
+try:
+    import TwitterAPI
+except ImportError:
+    pass
+
 
 class Stream(metaclass=abc.ABCMeta):
     def __init__(
-            self,
-            master: dict,
-            logger
+        self,
+        logger
     ):
-        self.master = master
         self.logger = logger
 
     @abc.abstractmethod
@@ -49,6 +49,17 @@ class Stream(metaclass=abc.ABCMeta):
 
 
 class Stdin(Stream):
+    def __init__(
+        self,
+        name,
+        screen_name,
+        logger
+    ):
+        Stream.__init__(self, logger)
+        self.name = name
+        self.screen_name = screen_name
+        self.logger = logger
+
     def __iter__(self):
         return self
 
@@ -58,20 +69,19 @@ class Stdin(Stream):
             "id": 0,
             "text": ipt,
             "user": {
-                "name": "けんこふ",
-                "screen_name": "kenkov",
+                "name": self.name,
+                "screen_name": self.screen_name
             },
         }
 
     def post(self, post_status) -> bool:
-        print("> {}".format(post_status["status"]))
+        print("{}".format(post_status["status"]))
         return True
 
 
 class Twitter(Stream):
     def __init__(
         self,
-        master,
         logger,
         consumer_key,
         consumer_secret,
@@ -79,7 +89,7 @@ class Twitter(Stream):
         oauth_secret
     ):
         # initialize superclass
-        Stream.__init__(self, master, logger)
+        Stream.__init__(self, logger)
 
         self.basetime = datetime.now()
         self.limit = 140
