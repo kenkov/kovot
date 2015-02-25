@@ -2,40 +2,26 @@
 # coding:utf-8
 
 
-import abc
 from logging import getLogger
-
-
-class Module(metaclass=abc.ABCMeta):
-    """
-    message の形式
-    message:
-        "id"
-        "text"
-        "user":
-            "name"
-            "screen_name"
-    """
-    def is_fire(self):
-        return True
-
-    @abc.abstractmethod
-    def reses(self, message, master):
-        pass
+from selector import Selector
+from postprocessing import PostProcessing
 
 
 class Kovot:
 
     def __init__(
         self,
-        target,
         stream,
         master,
+        selector=Selector(),
+        postprocessing=PostProcessing(),
         logger=None
     ):
-        self.target = target
         self.stream = stream
         self.master = master
+        self.selector = selector
+        self.postprocessing = postprocessing
+
         self.logger = logger if logger else getLogger(__file__)
         self.modules = []
 
@@ -47,6 +33,8 @@ class Kovot:
             "user":
                 "name"
                 "screen_name"
+
+        将来的には "type" もいれる
         """
         return (
             "text" in message and
@@ -59,22 +47,48 @@ class Kovot:
     def add_module(self, module):
         self.modules.append(module)
 
-    def reses(self, message):
-        modules = [module for module in self.modules if module.is_fire()]
-        reses = []
-        for module in modules:
-            reses.extend(module.reses(message, self.master))
-        return reses
+    def answers(self, message):
+        modules = [
+            module
+            for module in self.modules if module.is_fire(message, self.master)
+        ]
+
+        return sum(
+            [module.reses(message, self.master) for module in modules],
+            []
+        )
+
+    def show_modules(self) -> None:
+        self.logger.info("using modules:\n{}".format(
+            "\n".join("    - {}".format(str(mod)) for mod in self.modules)
+        ))
 
     def run(self):
+        self.show_modules()
         for message in self.stream:
             if not self.is_message(message):
                 continue
-            elif self.stream.is_tweet_needed(message):
-                reses = self.reses(message)
+            else:
+                # get answers from modules
+                answers = self.answers(message)
 
+                # select answers by using a Selector instance
+                post_answers = [
+                    self.postprocessing.convert(message, answer, self.master)
+                    for answer in self.selector.select(answers, num=10)
+                ]
+
+                # log
+                if post_answers:
+                    self.logger.info("### aswer candidates ###")
+                    for prob, text, source, info in post_answers:
+                        self.logger.info(
+                            "[{}] {:.4} {}".format(source, prob, text)
+                        )
+                    self.logger.info("########################")
+
+                # post
                 self.stream.say(
                     message,
-                    sorted(reses, reverse=True),
-                    num=5
+                    post_answers
                 )
