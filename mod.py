@@ -21,7 +21,7 @@ def setup_path(
         logger.debug("add PYTHONPATH: {}".format(mod_path))
 
 
-class Module(metaclass=abc.ABCMeta):
+class Mod(metaclass=abc.ABCMeta):
     """
     message の形式
     message:

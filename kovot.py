@@ -59,7 +59,7 @@ class Kovot:
         )
 
     def show_modules(self) -> None:
-        self.logger.info("using modules:\n{}".format(
+        self.logger.info("using mods:\n{}".format(
             "\n".join("    - {}".format(str(mod)) for mod in self.modules)
         ))
 
