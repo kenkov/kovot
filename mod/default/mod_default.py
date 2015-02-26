@@ -25,7 +25,7 @@ class ModDefault(Mod):
 
     def reses(self, message, master):
         return [
-            (random.random(),
+            (random.uniform(0, 0.3),
              text, "default", dict())
             for text in self.default_texts
         ]
