@@ -1,3 +1,7 @@
 twkovroid.py
 kovroid.py
 kovlang.model
+mod/
+!mod/default/
+!mod/logger
+!mod/echo
