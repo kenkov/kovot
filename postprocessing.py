@@ -1,7 +1,10 @@
 #! /usr/bin/env python
 # coding:utf-8
 
-import kovlive
+try:
+    import kovlive
+except ImportError:
+    pass
 
 
 class PostProcessing:
