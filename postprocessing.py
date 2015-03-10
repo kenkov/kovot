@@ -18,6 +18,6 @@ class Ja2Kov(PostProcessing):
 
     def convert(self, message, answer, master) -> (float, str, str):
         prob, text, source, info = answer
-        mod_text = self.kl.search(text)
+        mod_text = self.kl.ja2kov(text)
 
         return (prob, mod_text, source, info)
