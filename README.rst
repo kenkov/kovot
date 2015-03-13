@@ -71,12 +71,12 @@ Mod を作成する
 
 
     class ModEcho(Mod):
-        def reses(self, message, master) -> [(float, str, str, dict)]:
+        def utter(self, message, master) -> [(float, str, str, dict)]:
             return [
                 (1.0, message["text"], "echo", dict())
             ]
 
-        def is_fire(self, message, master):
+        def is_utterance_needed(self, message, master):
             return True
 
 
@@ -92,11 +92,11 @@ Mod を作成する
          }
     }
 
-という辞書になっています。``is_fire`` でこのモジュールから返答を生成するかどうか
+という辞書になっています。``is_utterance_needed`` でこのモジュールから返答を生成するかどうか
 を真偽値で返します。``ModEcho`` は常に返答を生成するので、この場合は ``True`` を
 返しています。
 
-``reses`` で返答のリストを返します。返答は
+``utter`` で返答のリストを返します。返答は
 
 ::
 
