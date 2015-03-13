@@ -20,10 +20,10 @@ class ModDefault(Mod):
         )
         self.default_texts = [line.strip() for line in open(text_path)]
 
-    def is_fire(self, message, master):
+    def is_utterance_needed(self, message, master):
         return True
 
-    def reses(self, message, master):
+    def utter(self, message, master):
         return [
             (random.uniform(0, 0.2),
              text, "default", dict())
