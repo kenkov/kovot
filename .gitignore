@@ -1,6 +1,7 @@
 twkovroid.py
 kovroid.py
 kovlang.model
+kovot_utils
 mod/
 !mod/default/
 !mod/logger

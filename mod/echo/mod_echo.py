@@ -6,10 +6,10 @@ from mod import Mod
 
 
 class ModEcho(Mod):
-    def reses(self, message, master):
+    def utter(self, message, master):
         return [
             (1.0, message["text"], "echo", dict())
         ]
 
-    def is_fire(self, message, master):
+    def is_utterance_needed(self, message, master):
         return True

@@ -50,11 +50,12 @@ class Kovot:
     def answers(self, message):
         modules = [
             module
-            for module in self.modules if module.is_fire(message, self.master)
+            for module in self.modules
+            if module.is_utterance_needed(message, self.master)
         ]
 
         return sum(
-            [module.reses(message, self.master) for module in modules],
+            [module.utter(message, self.master) for module in modules],
             []
         )
 
