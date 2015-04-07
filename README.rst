@@ -76,7 +76,7 @@ Mod を作成する
                 (1.0, message["text"], "echo", dict())
             ]
 
-        def is_utterance_needed(self, message, master):
+        def can_utter(self, message, master):
             return True
 
 
@@ -92,7 +92,7 @@ Mod を作成する
          }
     }
 
-という辞書になっています。``is_utterance_needed`` でこのモジュールから返答を生成するかどうか
+という辞書になっています。``can_utter`` でこのモジュールから返答を生成するかどうか
 を真偽値で返します。``ModEcho`` は常に返答を生成するので、この場合は ``True`` を
 返しています。
 
