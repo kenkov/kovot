@@ -42,7 +42,7 @@ class Mod(metaclass=abc.ABCMeta):
     ):
         self.logger = logger if logger else getLogger(__file__)
 
-    def is_utterance_needed(
+    def can_utter(
         self,
         message: dict,
         master: dict

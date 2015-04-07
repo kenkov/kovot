@@ -11,5 +11,5 @@ class ModEcho(Mod):
             (1.0, message["text"], "echo", dict())
         ]
 
-    def is_utterance_needed(self, message, master):
+    def can_utter(self, message, master):
         return True

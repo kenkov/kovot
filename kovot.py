@@ -51,7 +51,7 @@ class Kovot:
         modules = [
             module
             for module in self.modules
-            if module.is_utterance_needed(message, self.master)
+            if module.can_utter(message, self.master)
         ]
 
         return sum(
