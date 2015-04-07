@@ -4,5 +4,5 @@ kovlang.model
 kovot_utils
 mod/
 !mod/default/
-!mod/logger
-!mod/echo
+!mod/logger/
+!mod/echo/
