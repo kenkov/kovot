@@ -20,7 +20,7 @@ class ModDefault(Mod):
         )
         self.default_texts = [line.strip() for line in open(text_path)]
 
-    def is_utterance_needed(self, message, master):
+    def can_utter(self, message, master):
         return True
 
     def utter(self, message, master):

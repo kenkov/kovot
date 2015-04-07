@@ -14,7 +14,7 @@ class ModLogger(Mod):
     ):
         Mod.__init__(self, logger)
 
-    def is_utterance_needed(self, message, master) -> bool:
+    def can_utter(self, message, master) -> bool:
         self.logger.info(
             "[ModLogger] @{}: {}".format(
                 message["user"]["screen_name"],
