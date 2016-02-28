@@ -3,7 +3,7 @@
 
 
 from logging import getLogger
-from selector import Selector
+from operator import itemgetter
 from typing import Dict, Union
 
 
@@ -22,6 +22,21 @@ class PostProcessing:
         return answer
 
 
+# define selector
+class Selector:
+    def select(self, answers, num=10):
+        """
+        answer format:
+            (prob: float, text: str, source: str)
+        """
+        return sorted(
+            answers,
+            key=itemgetter(0),
+            reverse=True
+        )[:num]
+
+
+# Kovot
 class Kovot:
 
     def __init__(
