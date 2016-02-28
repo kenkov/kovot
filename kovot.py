@@ -3,11 +3,43 @@
 
 
 from logging import getLogger
-from selector import Selector
-from postprocessing import PostProcessing
-import traceback
+from operator import itemgetter
+from typing import Dict, Union
 
 
+# type defition
+Message = Dict[str, Union[str, Dict[str, str]]]
+
+
+# pre/post processing classes
+class PreProcessing:
+    def __init__(self, logger=None):
+        self.logger = logger if logger else getLogger(__file__)
+
+    def convert(self, message) -> Message:
+        return message
+
+
+class PostProcessing:
+    def convert(self, message, answer, master) -> (float, str, str):
+        return answer
+
+
+# define selector
+class Selector:
+    def select(self, answers, num=10):
+        """
+        answer format:
+            (prob: float, text: str, source: str)
+        """
+        return sorted(
+            answers,
+            key=itemgetter(0),
+            reverse=True
+        )[:num]
+
+
+# Kovot
 class Kovot:
 
     def __init__(
@@ -15,12 +47,14 @@ class Kovot:
         stream,
         master,
         selector=Selector(),
+        preprocessing=PreProcessing(),
         postprocessing=PostProcessing(),
         logger=None
     ):
         self.stream = stream
         self.master = master
         self.selector = selector
+        self.preprocessing = preprocessing
         self.postprocessing = postprocessing
 
         self.logger = logger if logger else getLogger(__file__)
@@ -65,19 +99,15 @@ class Kovot:
             "\n".join("    - {}".format(str(mod)) for mod in self.modules)
         ))
 
-    def run(self, log_file: str=""):
+    def run(self):
         self.show_modules()
 
-        if log_file:
-            try:
-                log_fd = open(log_file, "a")
-            except:
-                traceback.print_exc()
-                return
         for message in self.stream:
             if not self.is_message(message):
                 continue
             else:
+                # preprocessing
+                message = self.preprocessing.convert(message)
 
                 # get answers from modules
                 answers = self.answers(message)
@@ -96,22 +126,9 @@ class Kovot:
                             "[{}] {:.4} {}".format(source, prob, text)
                         )
                     self.logger.info("########################")
-                if log_file and post_answers:
-                    print("あなた>\t{}".format(message["text"]), file=log_fd)
-                    print(
-                        "{}>\t{}".format(
-                            self.master["name"],
-                            post_answers[0][1]
-                        ),
-                        file=log_fd
-                    )
 
                 # post
                 self.stream.say(
                     message,
                     post_answers
                 )
-
-        # close log file
-        if log_file:
-            log_fd.close()
