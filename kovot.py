@@ -13,6 +13,9 @@ Message = Dict[str, Union[str, Dict[str, str]]]
 
 # pre/post processing classes
 class PreProcessing:
+    def __init__(self, logger=None):
+        self.logger = logger if logger else getLogger(__file__)
+
     def convert(self, message) -> Message:
         return message
 
