@@ -114,4 +114,3 @@ class Kovot:
                     message,
                     post_answers
                 )
-
