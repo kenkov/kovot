@@ -2,7 +2,7 @@
 # coding:utf-8
 
 
-from mod import Mod
+from kovot.mod import Mod
 import random
 import os
 

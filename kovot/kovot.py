@@ -2,6 +2,7 @@
 # coding:utf-8
 
 
+
 from logging import getLogger
 from operator import itemgetter
 from typing import Dict, Union
@@ -122,9 +123,7 @@ class Kovot:
                 if post_answers:
                     self.logger.info("### aswer candidates ###")
                     for prob, text, source, info in post_answers:
-                        self.logger.info(
-                            "[{}] {:.4} {}".format(source, prob, text)
-                        )
+                        self.logger.info(f"[{source}] {prob:.4} {text}")
                     self.logger.info("########################")
 
                 # post
