@@ -24,6 +24,10 @@ class TestAnalyzerStub(unittest.TestCase, AnalyzerInterfaceTestMixin):
     def setUp(self):
         self.object = AnalyzerStub()
 
+    def test_has_wakati(self):
+        ret_val = self.object.analyze("疲れたので寝たい")
+        hasattr(ret_val, "wakati")
+
 
 class TestText(unittest.TestCase):
     def test_wakati(self):
