@@ -5,5 +5,11 @@
 from collections import namedtuple
 
 
-Message = namedtuple("Message", ["id_", "text", "user"])
+class Message:
+    def __init__(self, text, id_=0, user=None):
+        self.text = text
+        self.id_ = id_
+        self.user = user
+
+
 User = namedtuple("User", ["name"])

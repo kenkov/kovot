@@ -2,132 +2,107 @@
 # coding:utf-8
 
 
-
-from logging import getLogger
-from operator import itemgetter
-from typing import Dict, Union
+import logging
 
 
-# type defition
-Message = Dict[str, Union[str, Dict[str, str]]]
-
-
-# pre/post processing classes
-class PreProcessing:
-    def __init__(self, logger=None):
-        self.logger = logger if logger else getLogger(__file__)
-
-    def convert(self, message) -> Message:
+class Preprocessor:
+    def process(self, message):
+        """
+        Args:
+            message (Message):
+        """
         return message
 
 
-class PostProcessing:
-    def convert(self, message, answer, master) -> (float, str, str):
-        return answer
+class Postprocessor:
+    def process(self, response):
+        """
+        Args:
+            message (Response):
+        """
+        return response
 
 
-# define selector
-class Selector:
-    def select(self, answers, num=10):
+class ResponseSelector:
+    """もっとも適切なレスポンスを選択するクラス"""
+    def select(self, responses, num=10):
+        """レスポンスのうち、スコアが大きい方からデフォルトで 10 個を返す。
+        Args:
+            responses (List[Response]):
+            num (int): レスポンスの数
+
+        Returns (Response):
         """
-        answer format:
-            (prob: float, text: str, source: str)
+        score_descending_reses = list(sorted(responses,
+                                             key=lambda res: res.score,
+                                             reverse=True))
+        selected_reses = score_descending_reses[:num]
+        return selected_reses
+
+
+class ModuleManager:
+    def __init__(self, mods):
         """
-        return sorted(
-            answers,
-            key=itemgetter(0),
-            reverse=True
-        )[:num]
+        Args:
+            modules (List[Mod]): モジュールのリスト
+        """
+        self._mods = mods
+
+    def get_responses(self, message):
+        mods_available = [mod for mod in self._mods
+                          if mod.is_available(message)]
+
+        return sum([module.get_responses(message)
+                   for module in mods_available],
+                   [])
+
+    def show_modules(self):
+        logging.info("using mods:\n{}".format(
+            "\n".join("    - {}".format(str(mod)) for mod in self._mods)
+        ))
 
 
 # Kovot
 class Kovot:
-
-    def __init__(
-        self,
-        stream,
-        master,
-        selector=Selector(),
-        preprocessing=PreProcessing(),
-        postprocessing=PostProcessing(),
-        logger=None
-    ):
+    """対話システム実行クラス"""
+    def __init__(self,
+                 stream,
+                 bot,
+                 module_manager,
+                 response_selector,
+                 preprocessor,
+                 postprocessor):
         self.stream = stream
-        self.master = master
-        self.selector = selector
-        self.preprocessing = preprocessing
-        self.postprocessing = postprocessing
-
-        self.logger = logger if logger else getLogger(__file__)
-        self.modules = []
-
-    def is_message(self, message):
-        """
-        Check essage format:
-            "id"
-            "text"
-            "user":
-                "name"
-                "screen_name"
-
-        将来的には "type" もいれる
-        """
-        return (
-            "text" in message and
-            "user" in message and
-            "id" in message and
-            "name" in message["user"] and
-            "screen_name" in message["user"]
-        )
-
-    def add_module(self, module):
-        self.modules.append(module)
-
-    def answers(self, message):
-        modules = [
-            module
-            for module in self.modules
-            if module.can_utter(message, self.master)
-        ]
-
-        return sum(
-            [module.utter(message, self.master) for module in modules],
-            []
-        )
-
-    def show_modules(self) -> None:
-        self.logger.info("using mods:\n{}".format(
-            "\n".join("    - {}".format(str(mod)) for mod in self.modules)
-        ))
+        self.bot = bot
+        self.module_manager = module_manager
+        self.response_selector = response_selector
+        self.preprocessor = preprocessor
+        self.postprocessor = postprocessor
 
     def run(self):
-        self.show_modules()
+        self.module_manager.show_modules()
 
         for message in self.stream:
-            if not self.is_message(message):
-                continue
-            else:
-                # preprocessing
-                message = self.preprocessing.convert(message)
+            # preprocessing
+            message = self.preprocessor.process(message)
 
-                # get answers from modules
-                answers = self.answers(message)
+            # get responses from mods
+            responses = self.module_manager.get_responses(message)
 
-                # select answers by using a Selector instance
-                post_answers = [
-                    self.postprocessing.convert(message, answer, self.master)
-                    for answer in self.selector.select(answers, num=10)
-                ]
+            # select responses by Selector
+            selected_resposes = self.response_selector.select(responses,
+                                                              num=10)
+            postprocessed_reponses = [self.postprocessor.process(res)
+                                      for res in selected_resposes]
 
-                # log
-                if post_answers:
-                    self.logger.info("### aswer candidates ###")
-                    for prob, text, source, info in post_answers:
-                        self.logger.info(f"[{source}] {prob:.4} {text}")
-                    self.logger.info("########################")
+            # log
+            logging.info("### aswer candidates ###")
+            for response in postprocessed_reponses:
+                logging.info(f"[{response.source}] "
+                             f"{response.score:.4} "
+                             f"{response.text}")
+            logging.info("########################")
 
-                # post
-                self.stream.say(
-                    message,
-                    post_answers
-                )
+            # post
+            res = postprocessed_reponses[0]
+            self.stream.post(res)

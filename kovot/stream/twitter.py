@@ -51,4 +51,3 @@ class Twitter(Stream):
             self.logger.info("status code: {}".format(status_code))
             if status_code == 200:
                 return True
-

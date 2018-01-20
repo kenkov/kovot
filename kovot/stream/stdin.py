@@ -2,36 +2,22 @@
 # coding:utf-8
 
 
-from kovot.stream.stream import Stream
+from kovot.message import Message
+from kovot.message import User
+from kovot.text import Text
 import sys
 
 
-class Stdin(Stream):
-    def __init__(
-        self,
-        name,
-        screen_name,
-        logger
-    ):
-        Stream.__init__(self, logger)
-        self.name = name
-        self.screen_name = screen_name
-        self.logger = logger
-
+class Stdin:
     def __iter__(self):
         return self
 
     def __next__(self):
         ipt = sys.stdin.readline().strip()
-        return {
-            "id": 0,
-            "text": ipt,
-            "user": {
-                "name": self.name,
-                "screen_name": self.screen_name
-            },
-        }
+        return Message(id_=0,
+                       text=Text(ipt),
+                       user=User(name="あなた"))
 
-    def post(self, post_status) -> bool:
-        print("{}".format(post_status["status"]))
+    def post(self, response) -> bool:
+        print("{}".format(response.text))
         return True

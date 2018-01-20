@@ -31,3 +31,6 @@ class Text:
             return self._wakati
         self._wakati = self._analyzer.analyze(self._text).wakati
         return self._wakati
+
+    def __str__(self):
+        return self._text
