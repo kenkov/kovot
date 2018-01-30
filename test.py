@@ -5,6 +5,15 @@
 if __name__ == "__main__":
     from logging import getLogger, basicConfig, INFO, DEBUG
     import argparse
+    from kovot.kovot import Kovot
+    from kovot.kovot import Preprocessor
+    from kovot.kovot import Postprocessor
+    from kovot.kovot import ResponseSelector
+    from kovot.kovot import ModuleManager
+    from kovot.message import User
+    from kovot.mod.echo.echo import EchoMod
+    from kovot.mod.default.default import DefaultMod
+    from kovot.stream.stdin import Stdin
 
     # parse arg
     parser = argparse.ArgumentParser()
@@ -22,43 +31,14 @@ if __name__ == "__main__":
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     )
 
-    # setup path
-    from mod import setup_path
-    setup_path(
-        mod_dir="mod",
-        logger=logger
-    )
+    # mods
+    mods = [EchoMod(), DefaultMod()]
 
-    # setup kovot
-    import stream
-    from kovot import Kovot
-
-    master = {
-        "name": "botの名前",
-        "screen_name": "bots_screen_name",
-    }
-    kovot = Kovot(
-        stream.Stdin(
-            "あなたの名前",
-            "your_screen_name",
-            logger
-        ),
-        master,
-    )
-
-    # echo mod
-    from mod_echo import ModEcho
-    m_echo = ModEcho()
-    kovot.add_module(m_echo)
-
-    # default mod
-    from mod_default import ModDefault
-    m_default = ModDefault()
-    kovot.add_module(m_default)
-
-    # logger mod
-    from mod_logger import ModLogger
-    m_logger = ModLogger(logger)
-    kovot.add_module(m_logger)
+    kovot = Kovot(stream=Stdin(),
+                  bot=User(name="botname"),
+                  module_manager=ModuleManager(mods),
+                  response_selector=ResponseSelector(),
+                  preprocessor=Preprocessor(),
+                  postprocessor=Postprocessor())
 
     kovot.run()
