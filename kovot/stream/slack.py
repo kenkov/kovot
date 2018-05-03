@@ -5,19 +5,18 @@
 import os
 import time
 import logging
+import traceback
+import websocket
 from collections import deque
-from kovot.stream.stream import Stream
+from kovot.text import Text
+from kovot.message import Message
+from kovot.message import User
 from slackclient import SlackClient
 
 
-class Slack(Stream):
-    def __init__(self,
-                 realname,
-                 logger):
-        Stream.__init__(self, logger)
+class Slack:
+    def __init__(self, realname):
         self.realname = realname
-        self.logger = logger
-
         slack_token = os.environ["SLACK_API_TOKEN"]
         self.sc = SlackClient(slack_token)
         self.id2realname = self._get_id2realname()
@@ -25,7 +24,8 @@ class Slack(Stream):
 
     def _get_id2realname(self):
         return {item["id"]: item["real_name"]
-                for item in self.sc.api_call("users.list", limit=100)["members"]
+                for item
+                in self.sc.api_call("users.list", limit=100)["members"]
                 if "real_name" in item}
 
     def __iter__(self):
@@ -36,7 +36,12 @@ class Slack(Stream):
 
     def __next__(self):
         while True:
-            reses = self.sc.rtm_read()
+            try:
+                reses = self.sc.rtm_read()
+            except:
+                traceback.print_exc()
+                self.sc.rtm_connect()
+
             logging.debug(f"slack: {reses}")
             if reses:
                 for item in reses:
@@ -49,12 +54,9 @@ class Slack(Stream):
                 break
             time.sleep(1)
         mess = self.messages.popleft()
-        return {"id": 0,
-                "text": self._get_text(mess),
-                "user": {"name": "",
-                         "screen_name": "",
-                         },
-                }
+        return Message(id_=0,
+                       text=Text(self._get_text(mess)),
+                       user=User(name=""))
 
     def _get_text(self, message):
         if "text" in message:
@@ -64,12 +66,10 @@ class Slack(Stream):
 
         raise Exception("No text found in message")
 
-
-    def post(self, post_status) -> bool:
-        text = post_status["status"]
+    def post(self, response) -> bool:
         self.sc.api_call("chat.postMessage",
                          channel="#bot_test",
-                         text=text,
+                         text=response.text.text,
                          as_user=True  # bot user のアイコン、名前を設定してツイートする
                          )
         return True
