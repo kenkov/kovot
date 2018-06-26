@@ -5,6 +5,7 @@
 import unittest
 from kovot.response import Response
 from kovot.response import ResponseTransformer
+from kovot.response import ResponseSelector
 
 
 class ResponseTest(unittest.TestCase):
@@ -24,3 +25,20 @@ class TransformerTest(unittest.TestCase):
         transformer = ResponseTransformer()
 
         self.assertEqual(transformer.transform(res), res)
+
+
+class SelectorTest(unittest.TestCase):
+    def test_select(self):
+        x = Response(text="ひとつめ", score=1.2)
+        y = Response(text="ふたつめ", score=3.2)
+        z = Response(text="みっつめ", score=0.8)
+        selector = ResponseSelector()
+        self.assertEqual(selector.select([x, y, z]), [y, x, z])
+        
+    def test_select_with_num(self):
+        x = Response(text="ひとつめ", score=1.2)
+        y = Response(text="ふたつめ", score=3.2)
+        z = Response(text="みっつめ", score=0.8)
+        selector = ResponseSelector()
+        self.assertEqual(selector.select([x, y, z], num=2),
+                         [y, x])

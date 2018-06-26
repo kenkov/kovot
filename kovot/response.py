@@ -25,3 +25,22 @@ class Response(ClassInitReplMixin, ClassAttrEqMixin):
 class ResponseTransformer:
     def transform(self, response):
         return response
+
+
+class ResponseSelector:
+    """もっとも適切なレスポンスを選択するクラス"""
+    def select(self, responses, num=None):
+        """レスポンスのうち、スコアが大きい方からデフォルトで 10 個を返す。
+        Args:
+            responses (List[Response]):
+            num (int): レスポンスの数
+
+        Returns (Response):
+        """
+        score_descending_reses = list(sorted(responses,
+                                             key=lambda res: res.score,
+                                             reverse=True))
+        selected_reses = score_descending_reses
+        if num:
+            selected_reses = score_descending_reses[:num]
+        return selected_reses
