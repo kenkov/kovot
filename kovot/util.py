@@ -10,7 +10,8 @@ class ClassInitReplMixin:
 
         fmt = "{clsname}({attrs_str})"
         attrs_str = ", ".join("{}={}".format(key, val)
-                              for key, val in attrs.items())
+                              for key, val in attrs.items()
+                              if val)
 
         return fmt.format(clsname=clsname, attrs_str=attrs_str)
 

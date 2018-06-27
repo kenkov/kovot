@@ -3,4 +3,4 @@
 
 from collections import namedtuple
 
-User = namedtuple("User", ["name"])
+Speaker = namedtuple("User", ["name"])

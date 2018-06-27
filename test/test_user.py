@@ -3,11 +3,11 @@
 
 
 import unittest
-from kovot.user import User
+from kovot.speaker import Speaker
 
 
-class UserTest(unittest.TestCase):
+class SpeakerTest(unittest.TestCase):
     def test_user(self):
         name = "hoge"
-        message = User(name=name)
+        message = Speaker(name=name)
         self.assertEqual(message.name, name)

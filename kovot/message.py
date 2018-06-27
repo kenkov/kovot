@@ -5,10 +5,10 @@ from kovot.util import ClassInitReplMixin
 
 
 class Message(ClassInitReplMixin):
-    def __init__(self, text, id_=None, user=None):
+    def __init__(self, text, id_=None, speaker=None):
         self.text = text
         self.id_ = id_
-        self.user = user
+        self.speaker = speaker
 
 
 class MessageTransformer:

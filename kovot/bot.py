@@ -7,20 +7,20 @@ from kovot.mod import ModManager
 
 
 # Kovot
-class Kovot:
+class Bot:
     """対話システム実行クラス"""
     def __init__(self,
                  mods,
-                 bot=None,
+                 speaker=None,
                  preprocessor=None,
                  response_selector=None,
                  postprocessor=None):
 
         self.module_manager = ModManager(mods=mods)
 
-        if not bot:
-            from kovot.user import User
-            bot = User(name="bot")
+        if not speaker:
+            from kovot.speaker import Speaker
+            speaker = Speaker(name="bot")
 
         if not preprocessor:
             from kovot.message import MessageTransformer
@@ -34,7 +34,7 @@ class Kovot:
             from kovot.response import ResponseTransformer
             postprocessor = ResponseTransformer()
 
-        self.bot = bot
+        self.speaker = speaker
         self.response_selector = response_selector
         self.preprocessor = preprocessor
         self.postprocessor = postprocessor
@@ -46,7 +46,7 @@ class Kovot:
         message = self.preprocessor.transform(message)
 
         # get responses from mods
-        responses = self.module_manager.get_responses(message)
+        responses = self.module_manager.get_responses(self, message)
 
         # select responses by Selector
         selected_resposes = self.response_selector.select(responses,

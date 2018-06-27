@@ -11,13 +11,13 @@ class Response(ClassInitReplMixin, ClassAttrEqMixin):
                  text,
                  score,
                  id_=None,
-                 user=None,
+                 speaker=None,
                  message=None,
                  source=None):
         self.text = text
         self.score = score
         self.id_ = id_
-        self.user = user
+        self.speaker = speaker
         self.message = message
         self.source = source
 

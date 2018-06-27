@@ -7,9 +7,8 @@ import time
 import logging
 import traceback
 from collections import deque
-from kovot.text import Text
 from kovot.message import Message
-from kovot.message import User
+from kovot.speaker import Speaker
 from slackclient import SlackClient
 
 
@@ -55,7 +54,7 @@ class Slack:
         mess = self.messages.popleft()
         return Message(id_=0,
                        text=self._get_text(mess),
-                       user=User(name=""))
+                       speaker=Speaker(name=""))
 
     def _get_text(self, message):
         if "text" in message:

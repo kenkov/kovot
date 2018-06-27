@@ -24,20 +24,25 @@ class ModDouble:
     def _gen_res(self, score):
         return gen_res(score, self.mod_name)
 
-    def get_responses(self, message):
+    def get_responses(self, bot, message):
         reses = [self._gen_res(0.1),
                  self._gen_res(0.2)]
         return reses
+
+
+class KovotDouble:
+    pass
 
 
 class ModManagerTest(unittest.TestCase):
     def test_manager(self):
         mod1 = ModDouble("mod1")
         mod2 = ModDouble("mod2")
+        bot = KovotDouble()
         manager = ModManager(mods=[mod1, mod2])
         message = Message(text="テストメッセージ")
 
-        res = manager.get_responses(message)
+        res = manager.get_responses(bot, message)
         ans = [gen_res(0.1, "mod1"),
                gen_res(0.2, "mod1"),
                gen_res(0.1, "mod2"),

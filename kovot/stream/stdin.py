@@ -3,7 +3,7 @@
 
 
 from kovot.message import Message
-from kovot.user import User
+from kovot.speaker import Speaker
 import sys
 
 
