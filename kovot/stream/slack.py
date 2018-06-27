@@ -6,7 +6,6 @@ import os
 import time
 import logging
 import traceback
-import websocket
 from collections import deque
 from kovot.text import Text
 from kovot.message import Message
@@ -55,7 +54,7 @@ class Slack:
             time.sleep(1)
         mess = self.messages.popleft()
         return Message(id_=0,
-                       text=Text(self._get_text(mess)),
+                       text=self._get_text(mess),
                        user=User(name=""))
 
     def _get_text(self, message):

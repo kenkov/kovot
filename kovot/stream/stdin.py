@@ -4,7 +4,6 @@
 
 from kovot.message import Message
 from kovot.message import User
-from kovot.text import Text
 import sys
 
 
@@ -13,9 +12,8 @@ class Stdin:
         return self
 
     def __next__(self):
-        ipt = sys.stdin.readline().strip()
-        return Message(id_=0,
-                       text=Text(ipt),
+        ipt = sys.stdin.readline().strip("\n")
+        return Message(text=ipt,
                        user=User(name="あなた"))
 
     def post(self, response) -> bool:
