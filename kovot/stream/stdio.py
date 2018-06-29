@@ -7,15 +7,14 @@ from kovot.speaker import Speaker
 import sys
 
 
-class Stdin:
+class StdIO:
     def __iter__(self):
         return self
 
     def __next__(self):
         ipt = sys.stdin.readline().strip("\n")
         return Message(text=ipt,
-                       user=User(name="You"))
+                       speaker=Speaker(name="You"))
 
     def post(self, response) -> bool:
         print("{}".format(response.text))
-        return True
