@@ -2,43 +2,32 @@
 # coding:utf-8
 
 
+from kovot.mod import Mod
+from kovot.response import Response
+from kovot.bot import Bot
+from kovot.stream.stdio import StdIO
+
+
+class EchoMod(Mod):
+    def get_responses(self, bot, message):
+        res = Response(score=1.0,
+                       text=message.text,
+                       message=message,
+                       source=self.__class__.__name__)
+        return [res]
+
+
 if __name__ == "__main__":
-    from logging import getLogger, basicConfig, INFO, DEBUG
-    import argparse
-    from kovot.kovot import Kovot
-    from kovot.kovot import Preprocessor
-    from kovot.kovot import Postprocessor
-    from kovot.kovot import ResponseSelector
-    from kovot.kovot import ModuleManager
-    from kovot.message import User
-    from kovot.mod.echo.echo import EchoMod
-    from kovot.mod.default.default import DefaultMod
-    from kovot.stream.stdin import Stdin
+    from logging import basicConfig, INFO
 
-    # parse arg
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-v", "--verbose",
-        action="store_true",
-        help="show DEBUG log"
-    )
-    args = parser.parse_args()
-
-    # logger
-    logger = getLogger(__name__)
     basicConfig(
-        level=DEBUG if args.verbose else INFO,
+        level=INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     )
 
     # mods
-    mods = [EchoMod(), DefaultMod()]
+    mods = [EchoMod()]
+    kovot = Bot(mods=mods)
+    stdin_stream = StdIO()
 
-    kovot = Kovot(stream=Stdin(),
-                  bot=User(name="botname"),
-                  module_manager=ModuleManager(mods),
-                  response_selector=ResponseSelector(),
-                  preprocessor=Preprocessor(),
-                  postprocessor=Postprocessor())
-
-    kovot.run()
+    kovot.run(stdin_stream)
