@@ -55,7 +55,7 @@ class Bot:
                                   for res in selected_resposes]
 
         # log
-        logging.info("### aswer candidates ###")
+        logging.info("### answer candidates ###")
         for response in postprocessed_reponses:
             logging.info(f"[{response.source}] "
                          f"{response.score:.4} "

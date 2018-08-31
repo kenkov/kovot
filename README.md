@@ -5,8 +5,9 @@ Python 製のチャットボットフレームワークです。
 
 ## インストール
 
-バージョン 3.6 以降の Python で動作確認しています。
-次のように github から最新バージョンをインストールしてください。
+Kovot は Python 3.7 で動作確認しています。
+
+GitHub 上でリリースしている最新バージョンをインストールしてください。
 
 ```sh
 $ pip install git+https://github.com/kenkov/kovot@0.1.0
