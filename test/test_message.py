@@ -20,6 +20,15 @@ class MessageTest(unittest.TestCase):
         self.assertEqual(message_with_id.text, text)
         self.assertEqual(message_with_id.id_, id_)
 
+    def test_message_with_argv(self):
+        text = "京都にいます"
+        in_reply_to_id = 100
+        message_with_id = Message(text=text,
+                                  in_reply_to_id=in_reply_to_id)
+        self.assertEqual(message_with_id.text, text)
+        self.assertEqual(message_with_id.in_reply_to_id,
+                         in_reply_to_id)
+
 
 class TransformerTest(unittest.TestCase):
     def test_transformer(self):
