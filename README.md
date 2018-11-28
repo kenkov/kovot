@@ -188,13 +188,12 @@ bot.run(stream=stdio)
 ここで説明した全ての項目をまとめた実装例を示します。
 
 ```py
-from kovot.mod import Mod
 from kovot.response import Response
 from kovot.bot import Bot
 from kovot.stream.stdio import StdIO
 
 
-class EchoMod(Mod):
+class EchoMod:
     """おうむ返しする Kovot mod"""
     def get_responses(self, bot, message):
         res = Response(score=1.0,
