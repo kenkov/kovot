@@ -10,7 +10,7 @@ setup(
     install_requires=[
         "slackclient>=1.2.1"
     ],
-    version="0.1.0",
+    version="0.1.1",
     author="kenkov",
     author_email="kenkovtan@gmail.com",
     url="http://kenkov.jp",
