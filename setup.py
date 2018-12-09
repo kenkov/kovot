@@ -6,7 +6,7 @@ from distutils.core import setup
 
 setup(
     name="kovot",
-    packages=["kovot"],
+    packages=["kovot", "kovot.stream"],
     version="0.1.0",
     author="kenkov",
     author_email="kenkovtan@gmail.com",
