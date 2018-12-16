@@ -29,6 +29,14 @@ class MessageTest(unittest.TestCase):
         self.assertEqual(message_with_id.in_reply_to_id,
                          in_reply_to_id)
 
+    def test_dict(self):
+        message = Message(text="テスト", id_=0, new_arg="new_arg")
+        self.assertEqual(message.dict(),
+                         {"text": "テスト",
+                          "id_": 0,
+                          "speaker": None,
+                          "new_arg": "new_arg"})
+
 
 class TransformerTest(unittest.TestCase):
     def test_transformer(self):

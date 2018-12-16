@@ -12,6 +12,13 @@ class Message(ClassInitReplMixin):
         self.speaker = speaker
         self._argv = argv
 
+    def dict(self):
+        d = {"text": self.text,
+             "id_": self.id_,
+             "speaker": self.speaker.dict() if self.speaker else self.speaker,
+             **self._argv}
+        return d
+
     def __getattr__(self, name):
         return self._argv[name]
 
