@@ -26,7 +26,7 @@ Kovot は大きく3つのクラスからできています。
 応答として `Response` オブジェクトが返ります。
 
 `Mod` は、応答を生成するクラスです。
-`Bot` 内部では、`Message` オブジェクトを `Mod.get_responses` メソッドに渡すことで
+`Bot` 内部では、`Message` オブジェクトを `Mod.generate_responses` メソッドに渡すことで
 `Response` を生成します。
 Kovotでのチャットボット作成は `Mod` クラスを実装することになります。
 
@@ -42,14 +42,14 @@ Kovot では発話を `Message` オブジェクトで表現します。
 `Message` オブジェクトは、発話文字列を表す `text` を引数に生成します。
 
 ```py
-from kovot.message import Message
+from kovot import Message
 msg = Message(text="これが発話です。")
 ```
 
 オプション引数として話者を表す `Speaker` オブジェクトを指定する `speaker` を引数に指定できます。
 
 ```py
-from kovot.speaker import Speaker
+from kovot import Speaker
 msg = Message(text="話者を指定した発話です",
               speaker=Speaker(name="話者名"))
 ```
@@ -60,7 +60,7 @@ Kovot では、応答を `Response` オブジェクトで表します。
 `score` を引数に指定して生成します。
 
 ```py
-from kovot.response import Response
+from kovot import Response
 res = Response(text="応答です", score=1.0)
 ```
 
@@ -79,8 +79,8 @@ res = Response(text="オプション引数ありの応答です",
 
 ### Mod の実装
 
-`Mod` の実装には、`get_responses` メソッドを持つクラスを作成します。
-`get_responses` メソッドは
+`Mod` の実装には、`generate_responses` メソッドを持つクラスを作成します。
+`generate_responses` メソッドは
 
 - `Bot` オブジェクトと、ユーザの発話である `Message` オブジェクトを引数に取り、
 - 応答である `Response` オブジェクトのリストを返します。
@@ -91,10 +91,10 @@ res = Response(text="オプション引数ありの応答です",
 例えば、オウム返しをする `Mod` は次のように実装できます。
 
 ```py
-from kovot.response import Response
+from kovot import Response
 
 class EchoMod:
-    def get_responses(self, bot, message):
+    def generate_responses(self, bot, message):
         """
         Args:
             bot (Bot): このメソッドを呼ぶ Bot オブジェクトを指定します。
@@ -110,7 +110,7 @@ class EchoMod:
 `Bot` オブジェクトは、 `mods` 引数に `Mod` オブジェクトのリストを指定して生成します。
 
 ```py
-from kovot.bot import Bot
+from kovot import Bot
 bot = Bot(mods=[EchoMod()])
 ```
 
@@ -142,8 +142,8 @@ bot.talk(message=Message(text="ユーザの発話"))
 `Stream` クラスは次のように実装します。
 
 ```py
-from kovot.message import Message
-from kovot.speaker import Speaker
+from kovot import Message
+from kovot import Speaker
 import sys
 
 class StdIO:
@@ -176,7 +176,7 @@ class StdIO:
 `Steram` オブジェクトは、 `Bot.run` メソッドに引数として渡して実行します。
 
 ```py
-from kovot.stream.stdio import StdIO
+from kovot.stream import StdIO
 
 stdio = StdIO()
 bot.run(stream=stdio)
@@ -188,14 +188,14 @@ bot.run(stream=stdio)
 ここで説明した全ての項目をまとめた実装例を示します。
 
 ```py
-from kovot.response import Response
-from kovot.bot import Bot
-from kovot.stream.stdio import StdIO
+from kovot import Response
+from kovot import Bot
+from kovot.stream import StdIO
 
 
 class EchoMod:
     """おうむ返しする Kovot mod"""
-    def get_responses(self, bot, message):
+    def generate_responses(self, bot, message):
         res = Response(score=1.0,
                        text=message.text,
                        message=message,
