@@ -9,7 +9,7 @@ from kovot.message import Message
 
 
 class EchoMod:
-    def get_responses(self, bot, message):
+    def generate_responses(self, bot, message):
         res = Response(score=1.0,
                        text=message.text)
         return [res]
