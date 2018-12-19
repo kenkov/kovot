@@ -3,9 +3,10 @@
 
 
 import unittest
-from kovot.bot import Bot
-from kovot.response import Response
-from kovot.message import Message
+from kovot import Bot
+from kovot import Response
+from kovot import Message
+from kovot import Speaker
 
 
 class EchoMod:
@@ -17,7 +18,8 @@ class EchoMod:
 
 class BotTest(unittest.TestCase):
     def test_talk(self):
-        msg = Message(text="テスト")
+        msg = Message(text="テスト",
+                      speaker=Speaker(name="話し✋"))
         bot = Bot(mods=[EchoMod()])
 
         res = bot.talk(msg)
