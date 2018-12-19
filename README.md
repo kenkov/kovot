@@ -10,7 +10,7 @@ Kovot は Python 3.7 で動作確認しています。
 GitHub 上でリリースしている最新バージョンをインストールしてください。
 
 ```sh
-$ pip install git+https://github.com/kenkov/kovot@0.1.1
+$ pip install git+https://github.com/kenkov/kovot@0.2.1
 ```
 
 ## 使い方
