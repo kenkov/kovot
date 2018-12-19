@@ -11,7 +11,7 @@ class RemoteCallerMod:
     def __init__(self, server, port):
         self._root_url = "http://{}:{}".format(server, port)
 
-    def get_responses(self, bot, message):
+    def generate_responses(self, bot, message):
         url = "{}/api/get_responses".format(self._root_url)
         logging.debug("{} requests to {}".format(self.__class__.__name__, url))
         json = {"message": message.dict()}

@@ -9,7 +9,7 @@ from kovot.message import Message
 
 
 class ModTestMixin:
-    def test_mod(self):
+    def test_satisfy_interface(self):
         self.assertTrue(hasattr(self.mod, "generate_responses"))
 
 
