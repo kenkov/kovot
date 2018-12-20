@@ -8,11 +8,11 @@ from kovot.response import Response
 
 
 class RemoteCallerMod:
-    def __init__(self, server, port):
-        self._root_url = "http://{}:{}".format(server, port)
+    def __init__(self, server, port, endpoint):
+        self._url = "http://{}:{}/{}".format(server, port, endpoint)
 
     def generate_responses(self, bot, message):
-        url = "{}/api/generate_responses".format(self._root_url)
+        url = self._url
         logging.debug("{} requests to {}".format(self.__class__.__name__, url))
         json = {"message": message.dict()}
         res = requests.post(url=url, json=json)
