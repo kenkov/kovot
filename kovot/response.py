@@ -22,6 +22,14 @@ class Response(ClassInitReplMixin, ClassAttrEqMixin):
         self.message = message
         self.source = source
 
+    def dict(self):
+        return {"text": self.text,
+                "score": self.score,
+                "id_": self.id_,
+                "speaker": self.speaker.dict(),
+                "message": self.message.dict(),
+                "source": self.source}
+
     @classmethod
     def from_dict(cls, dic):
         # convert to Speaker and Message object from dictionary
