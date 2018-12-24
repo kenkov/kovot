@@ -9,7 +9,7 @@ from kovot.response import Response
 
 class RemoteCallerMod:
     def __init__(self, server, port, endpoint):
-        self._url = "http://{}:{}/{}".format(server, port, endpoint)
+        self._url = "http://{}:{}{}".format(server, port, endpoint)
 
     def generate_responses(self, bot, message):
         url = self._url
