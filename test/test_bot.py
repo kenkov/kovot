@@ -23,4 +23,9 @@ class BotTest(unittest.TestCase):
         bot = Bot(mods=[EchoMod()])
 
         res = bot.talk(msg)
-        res == Response(score=1.0, text="テスト")
+        self.assertEqual(res, Response(score=1.0, text="テスト"))
+
+    def test_dict(self):
+        bot = Bot(mods=[EchoMod()],
+                  speaker=Speaker("ボット"))
+        self.assertEqual(bot.dict(), {"speaker": {"name": "ボット"}})
