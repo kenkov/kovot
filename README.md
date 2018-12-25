@@ -32,7 +32,7 @@ kovot.run(stream=stdin_stream)
 
 ## Install
 
-Install Python 3.7 first, then install the latest version released on GtiHub;
+Install Python 3.7 first, then install the latest version released on GitHub;
 
 ```
 $ pip install git+https://github.com/kenkov/kovot@0.2.1

@@ -8,7 +8,7 @@ The `Message` object is a user utterance.
 
 `generater_responses` method method a List of `Response` objects.
 
-For example, Echo `Mod` can be implemented as follows;
+For example, `EchoMod` can be implemented as follows;
 
 ```py
 from kovot import Response

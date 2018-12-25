@@ -1,6 +1,6 @@
 ### Stream
 
-Using `Stream`, You can connect the input and output of `Bot` with services like `Twitter` or `Slack` .
+Using `Stream`, you can connect the input and output of `Bot` with services like `Twitter` or `Slack` .
 
 `Stream` class should implements
 
@@ -33,7 +33,7 @@ class StdIO:
         print("{}".format(response.text))
 ```
 
-To work with a stream,execute `Bot.run` method passing `Stream` object as a `stream` argument
+To work with a stream, execute `Bot.run` method passing `Stream` object as a `stream` argument
 
 ```py
 from kovot.stream import StdIO
