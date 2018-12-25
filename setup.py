@@ -11,7 +11,7 @@ setup(
         "slackclient==1.2.1",
         "requests==2.21.0",
     ],
-    version="0.2.1",
+    version="0.2.2",
     author="kenkov",
     author_email="kenkovtan@gmail.com",
     url="http://kenkov.jp",
