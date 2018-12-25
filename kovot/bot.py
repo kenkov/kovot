@@ -42,9 +42,6 @@ class Bot:
         # debug
         self.module_manager.show_mods()
 
-    def dict(self):
-        return {"speaker": self.speaker.dict()}
-
     def talk(self, message):
         message = self.preprocessor.transform(message)
 
