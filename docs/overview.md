@@ -6,8 +6,8 @@ Kovot consists of three classes as follows;
 1. Mod
 1. Stream
 
-First, `Bot` is a entry point class to run Kovot.
-`Bot.talk` requires `Message` object as a input utterance,
+First, the class `Bot` provides an entry point to Kovot.
+`Bot.talk` requires `Message` object as an input utterance,
 then it returns `Response` object as a response utterance.
 
 Second, `Mod` is a class for response generation.
