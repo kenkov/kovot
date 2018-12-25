@@ -2,6 +2,7 @@
 # coding:utf-8
 
 from kovot.util import ClassAttrEqMixin
+import kovot.util
 
 
 class Speaker(ClassAttrEqMixin):
@@ -9,7 +10,7 @@ class Speaker(ClassAttrEqMixin):
         self.name = name
 
     def dict(self):
-        return {"name": self.name}
+        return kovot.util.dict({"name": self.name})
 
     @classmethod
     def from_dict(cls, dic):

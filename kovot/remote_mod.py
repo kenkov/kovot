@@ -15,7 +15,7 @@ class RemoteCallerMod:
         url = self._url
         logging.debug("{} requests to {}".format(self.__class__.__name__, url))
         json = {"message": message.dict(),
-                "bot": bot.dict()
+                "bot": dict()
                 }
         res = requests.post(url=url, json=json)
         return [Response.from_dict(res_)

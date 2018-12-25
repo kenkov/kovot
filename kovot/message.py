@@ -2,6 +2,7 @@
 # coding:utf-8
 
 from kovot.util import ClassInitReplMixin
+import kovot.util
 
 
 class Message(ClassInitReplMixin):
@@ -15,9 +16,9 @@ class Message(ClassInitReplMixin):
     def dict(self):
         d = {"text": self.text,
              "id_": self.id_,
-             "speaker": self.speaker.dict() if self.speaker else self.speaker,
+             "speaker": self.speaker,
              **self._argv}
-        return d
+        return kovot.util.dict(d)
 
     def __getattr__(self, name):
         return self._argv[name]

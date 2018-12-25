@@ -5,6 +5,7 @@
 from kovot.util import ClassInitReplMixin
 from kovot.util import ClassAttrEqMixin
 from kovot.speaker import Speaker
+import kovot.util
 
 
 class Response(ClassInitReplMixin, ClassAttrEqMixin):
@@ -23,21 +24,22 @@ class Response(ClassInitReplMixin, ClassAttrEqMixin):
         self.source = source
 
     def dict(self):
-        return {"text": self.text,
-                "score": self.score,
-                "id_": self.id_,
-                "speaker": self.speaker.dict(),
-                "message": self.message.dict(),
-                "source": self.source}
+        d = {"text": self.text,
+             "score": self.score,
+             "id_": self.id_,
+             "speaker": self.speaker,
+             "message": self.message,
+             "source": self.source}
+        return kovot.util.dict(d)
 
     @classmethod
     def from_dict(cls, dic):
         # convert to Speaker and Message object from dictionary
-        if "speaker" in dic and dic["speaker"]:
+        if dic.get("speaker"):
             speaker = Speaker.from_dict(dic["speaker"])
         else:
             speaker = None
-        if "message" in dic and dic["message"]:
+        if dic.get("message"):
             message = Speaker.from_dict(dic["message"])
         else:
             message = None
