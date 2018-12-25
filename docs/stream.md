@@ -1,16 +1,13 @@
 ### Stream
 
-`Stream` オブジェクトを使うことで、 `Bot` の入出力を `Twitter` や `Slack` といった
-入出力を伴うサービスと関連づけることができます。
+Using `Stream`, You can connect the input and output of `Bot` with services like `Twitter` or `Slack` .
 
-`Stream` オブジェクトには、
+`Stream` class should implements
 
-- ユーザの発話 `Message` オブジェクトを返すイテレータと
-- システムの応答 `Response` オブジェクトをサービスに送る `post` メソッドを実装します。
+- iterator which returns `Message` objects as user utterances,
+- `post` method to post a system utterance to a service
 
-例えば、
-標準入力から `Message` を受け取り、標準出力から `Response` を表示する
-`Stream` クラスは次のように実装します。
+For example, `StdIO` stream which takes an input utterance from stdin and output a response to stdout can be implemented as follows;
 
 ```py
 from kovot import Message
@@ -22,34 +19,26 @@ class StdIO:
         return self
 
     def __next__(self):
-        """ユーザからの発話を `Message` として返すイテレータを定義
-
-        Args:
-        Returns:
-            Message: ユーザの発話を表す Message オブジェクト
+        """Iterator method to return user utterances
+        as `Message` objects
         """
         ipt = sys.stdin.readline().strip("\n")
         return Message(text=ipt,
                        speaker=Speaker(name="You"))
 
     def post(self, response) -> bool:
-        """Response オブジェクトを引数に取り、標準出力に表示する。
-
-        Args:
-            response (Response): システムの応答を表す Reseponse オブジェクト
-
-        Returns:
-            None
+        """This method takes a `Response` object as an argument,
+        and output it to stdout.
         """
         print("{}".format(response.text))
 ```
 
-`Steram` オブジェクトは、 `Bot.run` メソッドに引数として渡して実行します。
+To work with a stream,execute `Bot.run` method passing `Stream` object as a `stream` argument
 
 ```py
 from kovot.stream import StdIO
 
 stdio = StdIO()
 bot.run(stream=stdio)
-# 標準入力から発話を入れると、そのまま応答として標準出力に表示される
+# Input user utterance from stdin, then output it to stdout
 ```
