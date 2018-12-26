@@ -6,8 +6,12 @@ from distutils.core import setup
 
 setup(
     name="kovot",
-    packages=["kovot"],
-    version="0.1.0",
+    packages=["kovot", "kovot.stream"],
+    install_requires=[
+        "slackclient==1.2.1",
+        "requests==2.21.0",
+    ],
+    version="0.2.2",
     author="kenkov",
     author_email="kenkovtan@gmail.com",
     url="http://kenkov.jp",

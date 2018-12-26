@@ -1,6 +1,17 @@
 #! /usr/bin/env python
 # coding:utf-8
 
-from collections import namedtuple
+from kovot.util import ClassAttrEqMixin
+import kovot.util
 
-Speaker = namedtuple("Speaker", ["name"])
+
+class Speaker(ClassAttrEqMixin):
+    def __init__(self, name):
+        self.name = name
+
+    def dict(self):
+        return kovot.util.dict({"name": self.name})
+
+    @classmethod
+    def from_dict(cls, dic):
+        return cls(name=dic["name"])

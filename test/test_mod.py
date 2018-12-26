@@ -9,8 +9,8 @@ from kovot.message import Message
 
 
 class ModTestMixin:
-    def test_mod(self):
-        self.assertTrue(hasattr(self.mod, "get_responses"))
+    def test_satisfy_interface(self):
+        self.assertTrue(hasattr(self.mod, "generate_responses"))
 
 
 def gen_res(score, source):
@@ -24,7 +24,7 @@ class ModDouble:
     def _gen_res(self, score):
         return gen_res(score, self.mod_name)
 
-    def get_responses(self, bot, message):
+    def generate_responses(self, bot, message):
         reses = [self._gen_res(0.1),
                  self._gen_res(0.2)]
         return reses
@@ -42,7 +42,7 @@ class ModManagerTest(unittest.TestCase):
         manager = ModManager(mods=[mod1, mod2])
         message = Message(text="テストメッセージ")
 
-        res = manager.get_responses(bot, message)
+        res = manager.generate_responses(bot, message)
         ans = [gen_res(0.1, "mod1"),
                gen_res(0.2, "mod1"),
                gen_res(0.1, "mod2"),

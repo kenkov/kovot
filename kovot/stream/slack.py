@@ -41,7 +41,6 @@ class Slack:
                 traceback.print_exc()
                 self.sc.rtm_connect()
 
-            logging.debug(f"slack: {reses}")
             if reses:
                 for item in reses:
                     name = self.id2name.get(item.get("user", None), None)

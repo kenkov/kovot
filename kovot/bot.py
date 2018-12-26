@@ -46,7 +46,8 @@ class Bot:
         message = self.preprocessor.transform(message)
 
         # get responses from mods
-        responses = self.module_manager.get_responses(self, message)
+        responses = self.module_manager.generate_responses(self.speaker,
+                                                           message)
 
         # select responses by Selector
         selected_resposes = self.response_selector.select(responses,

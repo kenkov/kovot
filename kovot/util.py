@@ -21,3 +21,17 @@ class ClassAttrEqMixin:
     def __eq__(self, other):
         return all(getattr(other, key) == val
                    for key, val in self.__dict__.items())
+
+
+def dict(dic):
+    """
+    Args:
+        dic (dict): 辞書型のオブジェクト
+    """
+    def _dict(obj):
+        if not obj:
+            return obj
+        if hasattr(obj, "dict"):
+            return obj.dict()
+        return obj
+    return {key: _dict(val) for key, val in dic.items()}
