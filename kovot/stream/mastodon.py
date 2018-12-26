@@ -50,7 +50,10 @@ class Mastodon(collections.abc.Iterable):
             self.logger.error('Length of given status has exceeded the limit: %d' % len(response.text))
             return False
         try:
-            result = self.api.status_post(response.text, in_reply_to_id=response.message.id_)
+            if response.message is None:
+                result = self.api.status_post(response.text)
+            else:
+                result = self.api.status_post(response.text, in_reply_to_id=response.message.id_)
             self.logger.info('Updated: ' + str(result))
         except MastodonError:
             self.logger.error('An API error has occured.')
