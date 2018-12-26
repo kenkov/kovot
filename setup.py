@@ -9,6 +9,7 @@ setup(
     packages=["kovot", "kovot.stream"],
     install_requires=[
         "slackclient==1.2.1",
+        "Mastodon.py==1.3.1",
         "requests==2.21.0",
     ],
     version="0.2.2",
