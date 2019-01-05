@@ -1,7 +1,7 @@
 # Kovot
 
 Kovot is a chatbot framework written in Python.
-It aims to implement prototypes rapidly when researching or develogping chatbots.
+It aims to implement prototypes rapidly when researching or developing chatbots.
 
 Kovot is a simple framework, so you can easily customize it for realizing your idea about chatbots.
 Like below, Kovot consists of `Mod` - a base component to generate responses to a user utterance.
