@@ -11,7 +11,7 @@ from kovot import Message
 msg = Message(text="This is utterance.")
 ```
 
-`Message` class optionaly takes `Speaker` object which represents a speaker of the utterance.
+`Message` class optionally takes `Speaker` object which represents a speaker of the utterance.
 
 ```py
 from kovot import Speaker
@@ -32,7 +32,7 @@ res = Response(text="This is a response", score=1.0)
 
 Like `Message`, `Resposne` class takes following arguments as well as `speaker`. 
 
-- `message` correspoinding to the response
+- `message` corresponding to the response
 - `source` as a `Mod` name generating the response
 
 ```py
