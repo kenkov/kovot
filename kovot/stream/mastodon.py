@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import collections.abc
+from html.parser import HTMLParser
 from mastodon import StreamListener, MastodonError, Mastodon as MastodonAPI
 from queue import Queue
 from kovot import Message, Response, Speaker
 from logging import Logger
-from typing import Iterator, Optional
+from typing import Iterator, List
 __all__ = ['Mastodon']
 
 _TOOT_LIMIT = 500
@@ -78,9 +79,27 @@ class _TootListener(collections.abc.Iterable, StreamListener):
     def __iter__(self) -> Iterator[Message]:
         while True:
             raw = self.queue.get()
+            content = self._cleanse_html(raw['content'])
             speaker = Speaker(raw['account']['display_name'])
-            yield Message(raw['content'], id_=raw['id'], speaker=speaker)
+            yield Message(content, id_=raw['id'], speaker=speaker)
 
     def on_notification(self, notification: dict) -> None:
         if notification['type'] == 'mention':
             self.queue.put(notification['status'])
+
+    @staticmethod
+    def _cleanse_html(html: str) -> str:
+        class Parser(HTMLParser):
+            def __init__(self, *args, **kwargs):
+                super(Parser, self).__init__(*args, **kwargs)
+                self.sb: List[str] = []
+
+            def __str__(self) -> str:
+                return ''.join(self.sb)
+
+            def handle_data(self, data: str) -> None:
+                self.sb.append(data)
+
+        parser = Parser(convert_charrefs=True)
+        parser.feed(html)
+        return str(parser)
