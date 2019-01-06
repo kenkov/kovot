@@ -1,5 +1,6 @@
 # coding: utf-8
 
 
-from kovot.stream.stdio import StdIO
-from kovot.stream.slack import Slack
+from .stdio import StdIO
+from .slack import Slack
+from .mastodon import Mastodon
