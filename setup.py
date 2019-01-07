@@ -12,7 +12,7 @@ setup(
         "Mastodon.py==1.3.1",
         "requests==2.21.0",
     ],
-    version="0.2.3",
+    version="0.2.4",
     author="kenkov",
     author_email="kenkovtan@gmail.com",
     url="http://kenkov.jp",
