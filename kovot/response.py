@@ -60,10 +60,10 @@ class ResponseTransformer:
 class ResponseSelector:
     """もっとも適切なレスポンスを選択するクラス"""
     def select(self, responses, num=None):
-        """レスポンスのうち、スコアが大きい方からデフォルトで 10 個を返す。
+        """
         Args:
-            responses (List[Response]):
-            num (int): レスポンスの数
+            responses (List[Response]): List of responses.
+            num (int): the number of responses. If None, returns all of them.
 
         Returns (Response):
         """
