@@ -1,0 +1,16 @@
+resources:
+- name: kovot
+  type: git
+  source:
+    uri: https://github.com/kenkov/kovot.git
+    branch: master
+
+jobs:
+- name: unittest
+  public: true
+  plan:
+  - get: kovot
+    trigger: true
+  - task: unittest
+    file: kovot/ci/unittest.yml
+    privileged: true
